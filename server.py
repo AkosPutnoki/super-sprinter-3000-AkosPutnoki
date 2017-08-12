@@ -6,12 +6,14 @@ app = Flask(__name__)
 @app.route("/")
 @app.route("/list")
 def index():
-    return render_template("list.html")
+    database = import_data("database.csv")
+    return render_template("list.html", database=database)
 
 
 @app.route("/story")
 def story():
-    return render_template("form.html")
+    update = False
+    return render_template("form.html", update=update)
 
 
 @app.route("/save", methods=["POST"])
@@ -22,6 +24,22 @@ def save():
     table.append(new_input)
     export_data("database.csv", table)
     return redirect("/")
+
+
+@app.route("/story/<story_id>")
+def show_story(story_id):
+    update = True
+    table = import_data("database.csv")
+    for record in table:
+        if record[0] == story_id:
+            storytitle = record[1]
+            userstory = record[2]
+            criteria = record[3]
+            bvalue = record[4]
+            estimation = record[5]
+            status = record[6]
+    return render_template("form.html", update=update, storytitle=storytitle, userstory=userstory, criteria=criteria, bvalue=bvalue,
+                            estimation=estimation, status=status)
 
 
 def import_data(filename):

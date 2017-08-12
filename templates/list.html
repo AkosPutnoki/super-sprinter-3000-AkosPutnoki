@@ -7,7 +7,7 @@
     <body>
         <h1> User Story Manager </h1>
         <p><button type="submit" onclick="location.href = 'http://127.0.0.1:5000/story';"> Add new User Story </button></p>
-        <table>
+        <table border="1">
             <tr><th> ID </th>
                 <th> Story Title </th>
                 <th> User Story </th>
@@ -16,6 +16,13 @@
                 <th> Estimation </th>
                 <th> Status </th>
             </tr>
+        {% for line in database %}
+            <tr>
+                {% for item in line %}
+                <td> {{item}} </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
 
     </body>
 </html>
