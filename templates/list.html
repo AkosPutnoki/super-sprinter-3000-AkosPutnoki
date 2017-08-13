@@ -24,7 +24,7 @@
                 <td><form action="{{ url_for('show_story', story_id=line[0]) }}">
                 <button type="submit"><img src="/static/edit-512.png" height="30" width="30" /></button>
                 </form></td>
-                <td><form action="{{ url_for('update', story_id=line[0]) }}" method="post">
+                <td><form action="{{ url_for('delete', story_id=line[0]) }}" method="post">
                 <button type="submit"><img src="/static/garbage_can.png" height="30" width="30" /></button>
                 </form></td>
             </tr>

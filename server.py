@@ -60,6 +60,16 @@ def update(story_id):
     return redirect("/")
 
 
+@app.route("/delete/<story_id>", methods=["POST"])
+def delete(story_id):
+    table = import_data("database.csv")
+    for record in table:
+        if record[0] == story_id:
+            table.remove(record)
+    export_data("database.csv", table)
+    return redirect("/")
+
+
 def import_data(filename):
     with open(filename, "r") as data:
         table = [list(line) for line in csv.reader(data, delimiter=",")]
