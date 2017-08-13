@@ -14,7 +14,7 @@
         <form action="/save" method="post">
         {% else %}
         <h2>User Story manager - Edit Story</h2>
-        <form action="/update" method="post">
+        <form action="{{ url_for('update', story_id=story_id) }}" method="post">
         {% endif %}
             <h4>Story title:</h4>
             <input type="text" name="storytitle" value="{{storytitle}}">

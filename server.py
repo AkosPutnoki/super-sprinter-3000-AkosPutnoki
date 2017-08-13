@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, session
+from flask import Flask, render_template, redirect, request, session, url_for
 import csv
 
 app = Flask(__name__)
@@ -20,7 +20,11 @@ def story():
 def save():
     table = import_data("database.csv")
     new_input = input_to_list()
-    new_input.insert(0, len(table)+1)
+    if len(table) > 0:
+        id_list = [int(record[0]) for record in table]
+        new_input.insert(0, max(id_list)+1)
+    else:
+        new_input.insert(0, 1)
     table.append(new_input)
     export_data("database.csv", table)
     return redirect("/")
@@ -32,14 +36,28 @@ def show_story(story_id):
     table = import_data("database.csv")
     for record in table:
         if record[0] == story_id:
+            id_ = record[0]
             storytitle = record[1]
             userstory = record[2]
             criteria = record[3]
             bvalue = record[4]
             estimation = record[5]
             status = record[6]
-    return render_template("form.html", update=update, storytitle=storytitle, userstory=userstory, criteria=criteria, bvalue=bvalue,
+    return render_template("form.html", update=update, table=table, story_id=id_, storytitle=storytitle, userstory=userstory, criteria=criteria, bvalue=bvalue,
                             estimation=estimation, status=status)
+
+
+@app.route("/update/<story_id>", methods=["POST"])
+def update(story_id):
+    table = import_data("database.csv")
+    new_input = input_to_list()
+    new_input.insert(0, story_id)
+    for record in table:
+        if record[0] == story_id:
+            table.remove(record)
+    table.append(new_input)
+    export_data("database.csv", table)
+    return redirect("/")
 
 
 def import_data(filename):
