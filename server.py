@@ -55,7 +55,7 @@ def update(story_id):
     for record in table:
         if record[0] == story_id:
             table.remove(record)
-    table.append(new_input)
+    table.insert(int(story_id) - 1,new_input)
     export_data("database.csv", table)
     return redirect("/")
 
